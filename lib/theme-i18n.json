@@ -45,6 +45,13 @@
 				}
 			]
 		},
+		"shadows": {
+			"presets": [
+				{
+					"name": "Shadow presets name"
+				}
+			]
+		},
 		"blocks": {
 			"*": {
 				"typography": {
