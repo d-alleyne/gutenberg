@@ -45,7 +45,7 @@
 				}
 			]
 		},
-		"shadows": {
+		"shadow": {
 			"presets": [
 				{
 					"name": "Shadow presets name"
