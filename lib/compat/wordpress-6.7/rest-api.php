@@ -51,7 +51,6 @@ function gutenberg_block_editor_preload_paths_6_7( $paths, $context ) {
 	}
 
 	// Preload theme and global styles paths.
-	$excluded_paths = array();
 	if ( 'core/edit-site' === $context->name || 'core/edit-post' === $context->name ) {
 		$active_theme     = get_stylesheet();
 		$global_styles_id = WP_Theme_JSON_Resolver_Gutenberg::get_user_global_styles_post_id();
@@ -60,6 +59,7 @@ function gutenberg_block_editor_preload_paths_6_7( $paths, $context ) {
 		$paths[]          = array( '/wp/v2/global-styles/' . $global_styles_id, 'OPTIONS' );
 
 		// Remove duplicate or unnecessary global styles paths.
+		$excluded_paths   = array();
 		$excluded_paths[] = '/wp/v2/global-styles/themes/' . $active_theme;
 		$excluded_paths[] = '/wp/v2/global-styles/' . $global_styles_id;
 		foreach ( $paths as $key => $path ) {
@@ -124,15 +124,18 @@ function gutenberg_register_wp_rest_templates_controller_plugin_field() {
 }
 add_action( 'rest_api_init', 'gutenberg_register_wp_rest_templates_controller_plugin_field' );
 
-/**
- * Overrides the default 'WP_REST_Server' class.
- *
- * @return string The name of the custom server class.
- */
-function gutenberg_override_default_rest_server() {
-	return 'Gutenberg_REST_Server';
+// The `get_user` function was introduced in WP 6.7.
+if ( ! function_exists( 'get_user' ) ) {
+	/**
+	 * Overrides the default 'WP_REST_Server' class.
+	 *
+	 * @return string The name of the custom server class.
+	 */
+	function gutenberg_override_default_rest_server() {
+		return 'Gutenberg_REST_Server';
+	}
+	add_filter( 'wp_rest_server_class', 'gutenberg_override_default_rest_server', 1 );
 }
-add_filter( 'wp_rest_server_class', 'gutenberg_override_default_rest_server', 1 );
 
 
 /**

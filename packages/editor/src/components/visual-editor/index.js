@@ -385,6 +385,7 @@ function VisualEditor( {
 					'has-padding': isFocusedEntity || enableResizing,
 					'is-resizable': enableResizing,
 					'is-iframed': ! disableIframe,
+					'is-scrollable': disableIframe || deviceType !== 'Desktop',
 				}
 			) }
 		>
@@ -462,7 +463,13 @@ function VisualEditor( {
 								renderingMode !== 'post-only' ||
 									isDesignPostType
 									? 'wp-site-blocks'
-									: `${ blockListLayoutClass } wp-block-post-content` // Ensure root level blocks receive default/flow blockGap styling rules.
+									: `${ blockListLayoutClass } wp-block-post-content`, // Ensure root level blocks receive default/flow blockGap styling rules.
+								{
+									'has-global-padding':
+										renderingMode === 'post-only' &&
+										! isDesignPostType &&
+										hasRootPaddingAwareAlignments,
+								}
 							) }
 							layout={ blockListLayout }
 							dropZoneElement={
